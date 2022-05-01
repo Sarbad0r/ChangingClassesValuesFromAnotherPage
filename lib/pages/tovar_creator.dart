@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:tovar/db/tovar_db.dart';
 import 'package:tovar/models/tovar_model.dart';
 import 'package:tovar/providers/list_of_class_provider.dart';
 
@@ -34,6 +35,8 @@ class CrateTovar extends StatelessWidget {
 
                 if (!tovarProvider.check(tovar!) && index == null) {
                   tovarProvider.add(Tovar(
+                      name: nameController.text, code: codeController.text));
+                  DbTovar.inserToDb(Tovar(
                       name: nameController.text, code: codeController.text));
                   Navigator.pop(context);
                   return;
@@ -72,6 +75,7 @@ class CrateTovar extends StatelessWidget {
                 ),
                 TextField(
                   controller: codeController,
+                  keyboardType: TextInputType.number,
                   decoration:
                       InputDecoration(hintText: "Код", hintStyle: _textStyle),
                 )

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tovar/db/tovar_db.dart';
 import 'package:tovar/models/tovar_model.dart';
 import 'package:tovar/pages/tovar_creator.dart';
 import 'package:tovar/providers/list_of_class_provider.dart';
@@ -12,6 +13,19 @@ class HomePage extends StatelessWidget {
     var tovarProvider = Provider.of<ListOfClassProvider>(context);
     return Scaffold(
       appBar: AppBar(
+        actions: [
+          TextButton(
+              onPressed: () {
+                if (tovarProvider.listTovar.isNotEmpty)
+                  for (int i = 0; i < tovarProvider.listTovar.length; i++) {
+                    print(tovarProvider.listTovar[i].name);
+                  }
+                else {
+                  print('empty');
+                }
+              },
+              child: Text("Check"))
+        ],
         backgroundColor: Colors.amber,
         title: const Text("Lests go", style: TextStyle(color: Colors.white)),
         centerTitle: true,
@@ -34,8 +48,11 @@ class HomePage extends StatelessWidget {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => CrateTovar(
-                                tovar: tovarProvider.listTovar[index] ,index: index,),));
+                          builder: (context) => CrateTovar(
+                            tovar: tovarProvider.listTovar[index],
+                            index: index,
+                          ),
+                        ));
                   },
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -58,6 +75,7 @@ class HomePage extends StatelessWidget {
                           ),
                           IconButton(
                               onPressed: () {
+                                DbTovar.deleteIzbrannie(tovarProvider.listTovar[index].code);
                                 tovarProvider
                                     .delete(tovarProvider.listTovar[index]);
                               },
@@ -79,10 +97,12 @@ class HomePage extends StatelessWidget {
             children: [
               ElevatedButton(
                   onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => CrateTovar(
-                          tovar: Tovar(name: '', code: ''), index: null
-                        )));
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => CrateTovar(
+                                tovar: Tovar(name: '', code: ''),
+                                index: null)));
                   },
                   child: const Text("ADD")),
             ],
