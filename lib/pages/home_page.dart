@@ -75,7 +75,7 @@ class HomePage extends StatelessWidget {
                           ),
                           IconButton(
                               onPressed: () {
-                                DbTovar.deleteIzbrannie(tovarProvider.listTovar[index].id!);
+                                DbTovar.deleteTovar(tovarProvider.listTovar[index].id!);
                                 tovarProvider
                                     .delete(tovarProvider.listTovar[index]);
                               },

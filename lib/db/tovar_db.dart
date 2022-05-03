@@ -31,10 +31,15 @@ class DbTovar {
         conflictAlgorithm: ConflictAlgorithm.ignore);
   }
 
-  static Future<void> deleteIzbrannie(int id) async {
+  static Future<void> deleteTovar(int id) async {
     final db = await database;
 
     await db.delete("tovar", where: "id = ?", whereArgs: [id]);
+  }
+  static Future<void> updateTovar(Tovar tovar) async{
+    final db = await database;
+
+    await db.update('tovar', tovar.toJson(), where: 'id = ?', whereArgs: [tovar.id]);
   }
 
   static Future<List<Tovar>> getTovar() async {

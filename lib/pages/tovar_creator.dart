@@ -46,6 +46,7 @@ class CrateTovar extends StatelessWidget {
 
                 tovar!.code = codeController.text;
                 tovar!.name = nameController.text;
+                await DbTovar.updateTovar(tovar!);
                 tovarProvider.notify();
                 // tovarProvider.update(
                 //     tovar!, codeController.text, nameController.text);
