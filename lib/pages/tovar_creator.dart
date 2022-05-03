@@ -5,9 +5,8 @@ import 'package:tovar/models/tovar_model.dart';
 import 'package:tovar/providers/list_of_class_provider.dart';
 
 class CrateTovar extends StatelessWidget {
-  int? index;
   Tovar? tovar;
-  CrateTovar({Key? key, this.tovar, this.index}) : super(key: key);
+  CrateTovar({Key? key, this.tovar}) : super(key: key);
 
   var _formKey = GlobalKey<FormState>();
 
@@ -27,24 +26,29 @@ class CrateTovar extends StatelessWidget {
             const Text("For learning", style: TextStyle(color: Colors.white)),
         actions: [
           TextButton(
-              onPressed: () {
+              onPressed: () async{
                 FocusManager.instance.primaryFocus!.unfocus();
                 if (!_formKey.currentState!.validate()) {
                   return;
                 }
 
-                if (!tovarProvider.check(tovar!) && index == null) {
-                  tovarProvider.add(Tovar(
-                      name: nameController.text, code: codeController.text));
-                  DbTovar.inserToDb(Tovar(
-                      name: nameController.text, code: codeController.text));
+                Tovar tovarObject = Tovar(
+                    name: nameController.text, code: codeController.text);
+
+                if (!tovarProvider.check(tovar!)) {
+                  await DbTovar.inserToDb(tovarObject);
+                  print("ID: ${tovarObject.id}");
+                  tovarProvider.add(tovarObject);
+
                   Navigator.pop(context);
                   return;
                 }
 
-                tovarProvider.update(
-                    Tovar(name: nameController.text, code: codeController.text),
-                    index!);
+                tovar!.code = codeController.text;
+                tovar!.name = nameController.text;
+                tovarProvider.notify();
+                // tovarProvider.update(
+                //     tovar!, codeController.text, nameController.text);
                 Navigator.pop(context);
               },
               child: const Text(

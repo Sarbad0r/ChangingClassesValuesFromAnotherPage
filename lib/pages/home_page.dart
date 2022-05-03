@@ -18,6 +18,7 @@ class HomePage extends StatelessWidget {
               onPressed: () {
                 if (tovarProvider.listTovar.isNotEmpty)
                   for (int i = 0; i < tovarProvider.listTovar.length; i++) {
+                    print(tovarProvider.listTovar[i].id);
                     print(tovarProvider.listTovar[i].name);
                   }
                 else {
@@ -27,7 +28,7 @@ class HomePage extends StatelessWidget {
               child: Text("Check"))
         ],
         backgroundColor: Colors.amber,
-        title: const Text("Lests go", style: TextStyle(color: Colors.white)),
+        title: const Text("Lets go", style: TextStyle(color: Colors.white)),
         centerTitle: true,
       ),
       body: Column(
@@ -50,7 +51,6 @@ class HomePage extends StatelessWidget {
                         MaterialPageRoute(
                           builder: (context) => CrateTovar(
                             tovar: tovarProvider.listTovar[index],
-                            index: index,
                           ),
                         ));
                   },
@@ -75,7 +75,7 @@ class HomePage extends StatelessWidget {
                           ),
                           IconButton(
                               onPressed: () {
-                                DbTovar.deleteIzbrannie(tovarProvider.listTovar[index].code);
+                                DbTovar.deleteIzbrannie(tovarProvider.listTovar[index].id!);
                                 tovarProvider
                                     .delete(tovarProvider.listTovar[index]);
                               },
@@ -101,8 +101,7 @@ class HomePage extends StatelessWidget {
                         context,
                         MaterialPageRoute(
                             builder: (context) => CrateTovar(
-                                tovar: Tovar(name: '', code: ''),
-                                index: null)));
+                                tovar: Tovar(name: '', code: ''),)));
                   },
                   child: const Text("ADD")),
             ],

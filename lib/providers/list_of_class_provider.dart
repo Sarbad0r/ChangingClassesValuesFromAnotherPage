@@ -4,30 +4,33 @@ import 'package:tovar/models/tovar_model.dart';
 
 class ListOfClassProvider with ChangeNotifier {
   List<Tovar> _listTovar = [];
-  ListOfClassProvider()
-  {
+  ListOfClassProvider() {
     fetch();
   }
   void add(Tovar tovar) {
-    print(_listTovar.length + 1);
+    // print(_listTovar.length + 1);
     _listTovar.add(tovar);
     notifyListeners();
   }
-  void fetch()async
-  {
+
+  void fetch() async {
     await fetchAndSetData();
     _listTovar;
     notifyListeners();
   }
+
   void delete(Tovar tovar) {
     _listTovar.remove(tovar);
     notifyListeners();
   }
 
-  void update(Tovar tovar, int index) {
-    print("Кор кад");
-   
-    _listTovar.replaceRange(index, index + 1, [tovar]);
+  // void update(Tovar tovar, String code, String name) {
+  //   tovar.code = code;
+  //   tovar.name = name;
+  //   notifyListeners();
+  // }
+
+  void notify() {
     notifyListeners();
   }
 
@@ -41,9 +44,7 @@ class ListOfClassProvider with ChangeNotifier {
     print(data.length);
     if (data.isNotEmpty) {
       _listTovar = data.map((e) {
-        return Tovar(
-            name: e.name,
-            code : e.code);
+        return Tovar(id: e.id, name: e.name, code: e.code);
       }).toList();
     }
     return _listTovar;

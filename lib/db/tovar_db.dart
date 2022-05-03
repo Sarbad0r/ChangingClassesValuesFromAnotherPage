@@ -27,14 +27,14 @@ class DbTovar {
   static Future<void> inserToDb(Tovar tovar) async {
     final db = await database;
 
-    await db.insert("tovar", tovar.toJson(),
+    tovar.id = await db.insert("tovar", tovar.toJson(),
         conflictAlgorithm: ConflictAlgorithm.ignore);
   }
 
-  static Future<void> deleteIzbrannie(String code) async {
+  static Future<void> deleteIzbrannie(int id) async {
     final db = await database;
 
-    await db.delete("tovar", where: "code = ?", whereArgs: [code]);
+    await db.delete("tovar", where: "id = ?", whereArgs: [id]);
   }
 
   static Future<List<Tovar>> getTovar() async {
@@ -43,7 +43,10 @@ class DbTovar {
     final List<Map<String, dynamic>> maps = await db.query('tovar');
 
     return List.generate(maps.length, (index) {
-      return Tovar(name: maps[index]['name'], code: maps[index]['code']);
+      return Tovar(
+          id: maps[index]['id'],
+          name: maps[index]['name'],
+          code: maps[index]['code']);
     });
   }
 }
