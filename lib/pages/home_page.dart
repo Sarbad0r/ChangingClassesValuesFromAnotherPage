@@ -5,24 +5,24 @@ import 'package:tovar/pages/tovar_creator.dart';
 import 'package:tovar/providers/list_of_class_provider.dart';
 import 'package:provider/provider.dart';
 
+import '../providers/add_widget_provider.dart';
+
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    var addWidgetProvider = Provider.of<AddWidgetProvider>(context);
     var tovarProvider = Provider.of<ListOfClassProvider>(context);
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       appBar: AppBar(
         actions: [
           TextButton(
               onPressed: () {
-                if (tovarProvider.listTovar.isNotEmpty)
-                  for (int i = 0; i < tovarProvider.listTovar.length; i++) {
-                    print(tovarProvider.listTovar[i].id);
-                    print(tovarProvider.listTovar[i].name);
-                  }
-                else {
-                  print('empty');
+                for(int i = 0 ; i < addWidgetProvider.listWidget.length; i++)
+                {
+                  print(addWidgetProvider.listWidget[i].tovar_id);
                 }
               },
               child: Text("Check"))
@@ -46,11 +46,13 @@ class HomePage extends StatelessWidget {
               itemBuilder: (context, index) {
                 return InkWell(
                   onTap: () {
+                    var tovarId = addWidgetProvider.getWidget(tovarProvider.listTovar[index].id!);
                     Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) => CrateTovar(
                             tovar: tovarProvider.listTovar[index],
+                            listWidget: tovarId,
                           ),
                         ));
                   },
@@ -101,7 +103,7 @@ class HomePage extends StatelessWidget {
                         context,
                         MaterialPageRoute(
                             builder: (context) => CrateTovar(
-                                tovar: Tovar(name: '', code: ''),)));
+                                tovar: Tovar(name: '', code: ''), listWidget: [],)));
                   },
                   child: const Text("ADD")),
             ],
