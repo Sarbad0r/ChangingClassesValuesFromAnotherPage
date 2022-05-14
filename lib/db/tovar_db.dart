@@ -15,7 +15,7 @@ class DbTovar {
        CREATE TABLE tovar (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name TEXT, code TEXT)
       ''');
           await db.execute(
-              "CREATE TABLE card(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, tovar_id, name TEXT, code TEXT)");
+              "CREATE TABLE card(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, tovar_id, name TEXT, age TEXT)");
         },
         version: 2,
         onUpgrade: (db, oldVersion, newVersion) async {

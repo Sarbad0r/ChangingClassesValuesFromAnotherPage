@@ -19,25 +19,36 @@ class _CrateTovarState extends State<CrateTovar> {
   var _formKey = GlobalKey<FormState>();
   var _formKeyBottom = GlobalKey<FormState>();
 
-  late TextEditingController nameController =
-      TextEditingController(text: widget.tovar?.name);
 
-  late TextEditingController codeController =
-      TextEditingController(text: widget.tovar?.code);
 
-  late List<AddWidget> list = widget.listWidget!;
 
   late TextEditingController bottomNameController =
       TextEditingController(text: '');
   late TextEditingController bottomAgeController =
       TextEditingController(text: '');
+  late TextEditingController nameController = TextEditingController(text: '');
+  late TextEditingController codeController = TextEditingController(text: '');
+  late List<AddWidget> list = [];
+  @override
+  void initState() {
+   if(widget.tovar != null)
+   {
+      nameController =
+     TextEditingController(text: widget.tovar?.name);
 
+     codeController =
+     TextEditingController(text: widget.tovar?.code);
+
+     list = widget.listWidget!;
+   }
+  }
   @override
   Widget build(BuildContext context) {
     var _textStyle = const TextStyle(color: Colors.grey, fontSize: 14);
     var tovarProvider = Provider.of<ListOfClassProvider>(context);
     var addWidgetProvider = Provider.of<AddWidgetProvider>(context);
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         backgroundColor: Colors.amber,
         title:
@@ -55,18 +66,18 @@ class _CrateTovarState extends State<CrateTovar> {
                   return;
                 }
 
-                Tovar tovarObject =
+                widget.tovar ??=
                     Tovar(name: nameController.text, code: codeController.text);
 
                 if (!tovarProvider.check(widget.tovar!)) {
-                  await DbTovar.inserToDb(tovarObject);
-                  print("ID: ${tovarObject.id}");
-                  tovarProvider.add(tovarObject);
+                  await DbTovar.inserToDb(widget.tovar!);
+                  print("ID: ${widget.tovar!.id}");
+                  tovarProvider.add(widget.tovar!);
                   if (list.isNotEmpty) {
-                    await DbTovar.insertToCard(tovarObject.id!, list);
+                    await DbTovar.insertToCard(widget.tovar!.id!, list);
 
                     for (int i = 0; i < list.length; i++) {
-                      list[i].tovar_id = tovarObject.id;
+                      list[i].tovar_id = widget.tovar!.id;
                       addWidgetProvider.addWidget(list[i]);
                     }
                   }

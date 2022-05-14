@@ -102,8 +102,7 @@ class HomePage extends StatelessWidget {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => CrateTovar(
-                                tovar: Tovar(name: '', code: ''), listWidget: [],)));
+                            builder: (context) => CrateTovar()));
                   },
                   child: const Text("ADD")),
             ],
